@@ -27,11 +27,11 @@ class Probleme_standard:
 	def affiche(self):
 		print("Inf z = ",end="")
 		for i in range(self.c.size-1):
-			print("{0} * x{1} + ".format(self.c[i],i+1),end='')
-		print("{0} * x{1}".format(self.c[i+1],i+2))
+			print("{0} * x{1} + ".format(self.c[i],i),end='')
+		print("{0} * x{1}".format(self.c[i+1],i+1))
 		print("Avec : ")
 		for n in range(self.A.shape[0]):
-			j = 1
+			j = 0
 			for i in range(self.A.shape[1]-1):
 				print("{0} * x{1} + ".format(self.A[n][i],j),end='')
 				j += 1
@@ -39,7 +39,7 @@ class Probleme_standard:
 		print("x >= 0")
 
 	def resoudre(self):
-		base = [self.c.size-k for k in range(self.b.size)]
+		base = [self.c.size-1-k for k in range(self.b.size)]
 		base.sort()
 		print(base)
 		x = simplexe(self,base)
@@ -49,6 +49,7 @@ def main():
 	b = np.array([3,2])
 	c = np.array([-3,4,0,0])
 	pb = Probleme_standard(A,b,c)
+	pb.affiche()
 	pb.resoudre()
 
 if __name__ == "__main__":
