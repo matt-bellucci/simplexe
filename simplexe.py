@@ -1,18 +1,22 @@
 import numpy as np
-from probleme import *
+from probleme import Probleme_standard
+from tableau import Tableau
 
 
 def simplexe(pb,base):
 
+
+	# Construction du tableau a partir des donnees du probleme
+
+
 	A = pb.A
-	b = pb.b
-	d = pb.c
-	#while (any(i<0 for i in d)):
-	col = np.argmin(d)
-	[sort,entre] = pivot(A,b,d)
-	print(base[sort])
-	print(entre)
-	print(base)
+	b = pb.b.reshape(pb.b.size,1) # on met le vecteur en b en colonne
+	c = pb.c
+	c = np.append(c,0) # ajout du 0 dans derniere ligne derniere colonne du tableau
+	tab_matrix = np.vstack((np.hstack((A,b)),c)) # concatenation de A, b et c pour former le tab du simplexe
+	tab = Tableau(tab_matrix)
+
+	
 
 def pivot(A,b,d,critere="naturel"):
 	if critere=="naturel":
@@ -49,4 +53,20 @@ def pivot_nat(A,b,d):
 				sortante = i
 	return [sortante,entrante]
 
-#def pivot_bland(vec,b):
+
+def resoudre(pb):
+	base = [pb.c.size-1-k for k in range(pb.b.size)]
+	base.sort()
+	print(base)
+	x = simplexe(pb,base)
+
+def main():
+	A = np.array([[1,1,1,0],[1,2,0,1]])
+	b = np.array([3,2])
+	c = np.array([-3,4,0,0])
+	pb = Probleme_standard(A,b,c)
+	pb.affiche()
+	resoudre(pb)
+
+if __name__ == "__main__":
+	main()

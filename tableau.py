@@ -19,6 +19,9 @@ class Tableau:
 		for k in range(self.nb_cols):
 			self.tab[i] *= coef
 
+	def get_line(self,i):
+		return self.tab[i]
+
 	def __str__(self):
 		return np.array_str(self.tab)
 

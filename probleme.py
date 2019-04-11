@@ -1,5 +1,4 @@
 import numpy as np
-from simplexe import *
 
 class DimError(Exception):
 	def __init__(self,sizeA,sizeB,sizeC):
@@ -38,11 +37,6 @@ class Probleme_standard:
 			print("{0} * x{1} = {2}".format(self.A[n][i+1],j,self.b[n]))
 		print("x >= 0")
 
-	def resoudre(self):
-		base = [self.c.size-1-k for k in range(self.b.size)]
-		base.sort()
-		print(base)
-		x = simplexe(self,base)
 
 def main():
 	A = np.array([[1,1,1,0],[1,2,0,1]])
@@ -50,7 +44,6 @@ def main():
 	c = np.array([-3,4,0,0])
 	pb = Probleme_standard(A,b,c)
 	pb.affiche()
-	pb.resoudre()
 
 if __name__ == "__main__":
 	main()
