@@ -22,18 +22,23 @@ class Tableau:
 	def get_line(self,i):
 		return self.tab[i]
 
+	def is_positive(self,i,exclude_last=True):
+		if exclude_last:
+			comp = [x>=0 for x in self.tab[i][:-1]]
+		else:
+			comp = [x>=0 for x in self.tab[i]]
+		print(comp)
+		return all(comp)
+
+		
 	def __str__(self):
 		return np.array_str(self.tab)
 
 
 
 def main():
-	A = np.array([[3,4,5],[6,7,8]])
+	A = np.array([[3,4,5],[6,7,-1]])
 	tab = Tableau(A)
-	print(tab)
-	tab.add_lines(0,1)
-	print(tab)
-	tab.mult_lines(0,-1)
-	print(tab)
+	print(tab.is_positive(1))
 if __name__ == "__main__":
 	main()
