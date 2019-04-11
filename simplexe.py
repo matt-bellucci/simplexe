@@ -49,43 +49,7 @@ def pivot_naturel(c):
 def pivot_bland(c):
 
 	return np.where(c<0)[0][0]
-""""
-def pivot(A,b,d,critere="naturel"):
-	if critere=="naturel":
-		return pivot_nat(A,b,d)
-	elif critere=="bland":
-		return privot_bland(A,b,d)
-	else:
-		print("Critere {0} n'existe pas, application critere naturel".format(critere))
-		return pivot(A,b,d)
-	argmin = 0
-	mini = b[0]/vec[0]
-	for i in range(vec.size):
-		if vec[i]<0:
-			continue
-		else:
-			t = b[i]/vec[i]
-			if t<mini:
-				mini = t
-				argmin = i
-	return argmin
-
-def pivot_nat(A,b,d):
-	entrante = np.argmin(d) # plus petit j ou d est le plus petit
-	sortante = 0
-	vec = A[:,entrante]
-	mini = b[0]/vec[0]
-	for i in range(b.size):
-		if vec[i]<0:
-			continue
-		else:
-			t = b[i]/vec[i]
-			if t<mini:
-				mini = t
-				sortante = i
-	return [sortante,entrante]
-"""
-
+	
 def resoudre(pb):
 	base = [pb.c.size-1-k for k in range(pb.b.size)]
 	base.sort()
