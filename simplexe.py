@@ -2,7 +2,7 @@ import copy
 import numpy as np
 from probleme import Probleme_standard
 from tableau import Tableau, is_positive
-
+import liste_problemes
 
 def simplexe(pb,base):
 
@@ -41,7 +41,8 @@ def simplexe(pb,base):
 
 	if ite >= ite_max:
 		print("Pas de convergence")
-	affiche_solution(tab,base)
+	sol = affiche_solution(tab,base)
+	return sol
 
 def pivot(tab,critere="naturel",primal=True):
 
@@ -92,6 +93,7 @@ def resoudre(pb):
 	base.sort()
 	# print("base = {0}".format(base))
 	x = simplexe(pb,base)
+	return x
 
 def affiche_solution(tab,base):
 	sol = np.zeros(tab.nb_cols-1)
@@ -100,6 +102,7 @@ def affiche_solution(tab,base):
 	print("La solution est : {0}, avec z = {1} et:".format(sol[range(len(base))],-tab.get_element(tab.nb_lines-1,tab.nb_cols-1)))
 	for i in range(len(sol)):
 		print("x{0} = {1}".format(i,sol[i]))
+	return sol
 
 
 def probleme_auxiliaire(tab,base):
@@ -112,12 +115,12 @@ def probleme_auxiliaire(tab,base):
 
 
 def main():
-	A = np.array([[-1,-1,1,0,0],[1,-1,0,1,0],[0,1,0,0,1]])
-	b = np.array([-4,-1,3])
-	c = np.array([1,-2,0,0,0])
-	pb = Probleme_standard(A,b,c)
+
+
+	pb,sol = liste_problemes.get_primal()
 	pb.affiche()
-	resoudre(pb)
+	sol_s = resoudre(pb)
+	print(sol-sol_s)
 
 if __name__ == "__main__":
 	main()
