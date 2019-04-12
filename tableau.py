@@ -2,32 +2,36 @@ import numpy as np
 class Tableau:
 
 	def __init__(self,A):
-		self.tab = A
+		self.tab = np.array(A,dtype=float)
 		self.nb_lines = A.shape[0]
 		self.nb_cols = A.shape[1]
 
-	def add_lines(self,i,j):
+	def add_lines(self,i,j,coef=1):
 		"""
-		Additionne la ligne j à la ligne i
+		Additionne la ligne j * coef à la ligne i
 
 		"""
 		for k in range(self.nb_cols):
-			self.tab[i][k] += self.tab[j][k]
+			self.tab[i][k] += self.tab[j][k]*coef
 
-	def mult_lines(self,i,coef):
-
+	def mult_line(self,i,coef):
 		for k in range(self.nb_cols):
-			self.tab[i] *= coef
+			self.tab[i,k] *= coef
 
 	def get_line(self,i):
 		return self.tab[i]
+
+	def get_column(self,j):
+		return self.tab[:,j]
+
+	def get_element(self,i,j):
+		return self.tab[i,j]
 
 	def is_positive(self,i,exclude_last=True):
 		if exclude_last:
 			comp = [x>=0 for x in self.tab[i][:-1]]
 		else:
 			comp = [x>=0 for x in self.tab[i]]
-		print(comp)
 		return all(comp)
 
 		
@@ -39,6 +43,5 @@ class Tableau:
 def main():
 	A = np.array([[3,4,5],[6,7,-1]])
 	tab = Tableau(A)
-	print(tab.is_positive(1))
 if __name__ == "__main__":
 	main()

@@ -1,3 +1,4 @@
+import copy
 import numpy as np
 from probleme import Probleme_standard
 from tableau import Tableau
@@ -5,7 +6,8 @@ from tableau import Tableau
 
 def simplexe(pb,base):
 
-	max_ite = 1
+	bases = [copy.copy(base)]
+	ite_max = 10
 
 	# Construction du tableau a partir des donnees du probleme
 
@@ -19,28 +21,49 @@ def simplexe(pb,base):
 	# Demarrage iterations
 
 	ite = 0
-	while ite<max_ite and not tab.is_positive(tab.nb_lines-1):
-		print("==========Ite {0}=============".format(ite+1))
+	while ite<ite_max and not tab.is_positive(tab.nb_lines-1):
+		# print("==========Ite {0}=============".format(ite+1))
 		# chercher pivot
-		print(tab)
-		col = pivot(tab)
-		print(col)
-		print()
+		line,col = pivot(tab)
 		# actualiser base
+		base[line] = col
+		bases.append(copy.copy(base))
 		# mettre pivot a 1
+		a_ij = tab.get_element(line,col)
+		tab.mult_line(line,1/a_ij)
 		# colonne du pivot a 0
+		a_ij = tab.get_element(line,col)
+		for k in range(tab.nb_lines):
+			if k == line:
+				continue
+			else:
+				a_ik = tab.get_element(k,col)
+				coef = -a_ik/a_ij
+				tab.add_lines(k,line,coef=coef)
 
 		ite += 1
 
-
+	if ite >= ite_max:
+		print("Pas de convergence")
+	affiche_solution(tab,base)
 def pivot(tab,critere="naturel"):
+
 	c = np.array(tab.get_line(tab.nb_lines-1)[:-1])
 
 	if critere == "bland":
 		col = pivot_bland(c)
 	else:
 		col = pivot_naturel(c)
-	return col
+
+	b = tab.get_column(tab.nb_cols-1)
+	a_i = tab.get_column(col)
+
+	div = b/a_i # division de b par a_i
+	pos_ind = [i for i in range(len(div)) if div[i]>0] # recuperation des indices ou la division est strict positive
+	amin = np.argmin(div[pos_ind]) # recuperation de l'indice du min pour les elements strict positifs de div
+	line = pos_ind[amin] # recuperation de la ligne du tableau correspondant a ce min des elements >0
+
+	return (line,col)
 
 def pivot_naturel(c):
 
@@ -53,13 +76,22 @@ def pivot_bland(c):
 def resoudre(pb):
 	base = [pb.c.size-1-k for k in range(pb.b.size)]
 	base.sort()
-	print(base)
+	# print("base = {0}".format(base))
 	x = simplexe(pb,base)
+
+def affiche_solution(tab,base):
+	sol = np.zeros(tab.nb_cols-1)
+	for i in range(len(base)):
+		sol[base[i]] = tab.get_element(i,tab.nb_cols-1)
+	print("La solution est : {0}, avec z = {1} et:".format(sol[range(len(base))],-tab.get_element(tab.nb_lines-1,tab.nb_cols-1)))
+	for i in range(len(sol)):
+		print("x{0} = {1}".format(i,sol[i]))
+
 
 def main():
 	A = np.array([[1,1,1,0],[1,2,0,1]])
 	b = np.array([3,2])
-	c = np.array([-3,-4,0,0])
+	c = np.array([-4,-10,0,0])
 	pb = Probleme_standard(A,b,c)
 	pb.affiche()
 	resoudre(pb)
