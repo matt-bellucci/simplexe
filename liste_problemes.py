@@ -11,7 +11,7 @@ def get_primal():
 def get_dual():
 	A = np.array([[-1,-1,0,1,0],[-2,3,-5,0,1]])
 	b = np.array([-4,-10])
-	c = np.array([1,2,3])
+	c = np.array([1,2,3,0,0])
 	pb = Probleme_standard(A,b,c)
 	sol = np.array([5,0,0,1,0])
 	return (pb,sol)

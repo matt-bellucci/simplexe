@@ -27,9 +27,11 @@ class Tableau:
 	def get_element(self,i,j):
 		return self.tab[i,j]
 
-	def is_positive(self,i,exclude_last=True):
-		print(self.tab[i])
-		return is_positive(self.tab[i],exclude_last=exclude_last)
+	def is_positive(self,i,exclude_last=True,axis=0):
+		if axis == 0:
+			return is_positive(self.tab[i],exclude_last=exclude_last)
+		elif axis == 1:
+			return is_positive(self.tab[:,i],exclude_last=exclude_last)
 
 		
 	def __str__(self):
