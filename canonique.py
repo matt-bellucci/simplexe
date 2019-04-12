@@ -1,5 +1,5 @@
 import numpy as np
-from probleme import *
+from probleme import Probleme_standard
 
 class Probleme_canonique:
 

@@ -28,17 +28,19 @@ class Tableau:
 		return self.tab[i,j]
 
 	def is_positive(self,i,exclude_last=True):
-		if exclude_last:
-			comp = [x>=0 for x in self.tab[i][:-1]]
-		else:
-			comp = [x>=0 for x in self.tab[i]]
-		return all(comp)
+		print(self.tab[i])
+		return is_positive(self.tab[i],exclude_last=exclude_last)
 
 		
 	def __str__(self):
 		return np.array_str(self.tab)
 
-
+def is_positive(array,exclude_last=True):
+	if exclude_last:
+		comp = [x>=0 for x in array[:-1]]
+	else:
+		comp = [x>=0 for x in array]
+	return all(comp)
 
 def main():
 	A = np.array([[3,4,5],[6,7,-1]])
