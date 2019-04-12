@@ -1,4 +1,3 @@
-import copy
 import numpy as np
 from probleme import Probleme_standard
 from tableau import Tableau, is_positive
@@ -76,7 +75,6 @@ def simplexe(tab,base,primal,ite_max=10):
 
 		# actualiser base
 		base[line] = col
-		bases.append(copy.copy(base))
 		actualisation_tableau(tab,line,col)
 
 		# si primal, on cherche sur le vecteur d (ligne en bas du tableau)
@@ -297,8 +295,6 @@ def probleme_auxiliaire(pb):
 		Liste des numeros de variables qui sont dans la base primale realisable trouvee
 
 	"""
-
-
 
 	A = pb.A
 	b = pb.b
