@@ -21,4 +21,5 @@ def get_aux():
 	b = np.array([-4,-1,3])
 	c = np.array([1,-2,0,0,0])
 	pb = Probleme_standard(A,b,c)
-	return pb
+	sol = np.array([1,3,0,1,0])
+	return (pb,sol)
