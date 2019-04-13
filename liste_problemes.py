@@ -1,5 +1,9 @@
 import numpy as np
 from probleme import Probleme_standard
+
+"""
+Ce module permet d'acceder a des problemes a resoudre et connaitre leur solution
+"""
 def get_primal():
 	A = np.array([[2,3,1,1,0,0],[4,1,2,0,1,0],[3,4,2,0,0,1]])
 	b = np.array([5,11,8])
