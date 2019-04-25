@@ -33,7 +33,7 @@ def is_primal(pb):
 	"""
 	return is_positive(pb.b)
 
-def simplexe(tab,base,primal,ite_max=10):
+def simplexe(tab,base,primal,ite_max=10,print_sol=True):
 	"""
 	Effectue un simplexe
 
@@ -68,8 +68,8 @@ def simplexe(tab,base,primal,ite_max=10):
 		cond = tab.is_positive(tab.nb_cols-1,axis=1)
 
 	while ite<ite_max and not cond:
-		print("==========Ite {0}=============".format(ite+1))
-		print(tab)
+		# print("==========Ite {0}=============".format(ite+1))
+		# print(tab)
 		# chercher pivot
 		line,col = pivot(tab,primal=primal)
 
@@ -86,7 +86,7 @@ def simplexe(tab,base,primal,ite_max=10):
 		ite += 1
 	if ite >= ite_max:
 		print("Pas de convergence")
-	sol = affiche_solution(tab,base)
+	sol = get_solution(tab,base,print_sol=print_sol)
 	return (sol,base)
 
 def pivot(tab,critere="naturel",primal=True):
@@ -172,21 +172,21 @@ def actualisation_tableau(tab,line,col):
 		la ligne et colonne du pivot
 
 	"""
-		# on divise la ligne du pivot par la valeur du pivot
-		a_ij = tab.get_element(line,col)
-		tab.mult_line(line,1/a_ij)
+	# on divise la ligne du pivot par la valeur du pivot
+	a_ij = tab.get_element(line,col)
+	tab.mult_line(line,1/a_ij)
 
-		# on passe la colonne du pivot a 0
-		a_ij = tab.get_element(line,col)
-		for k in range(tab.nb_lines):
-			if k == line:
-				continue
-			else:
-				# on cherche par quelle valeur multiplie la ligne du pivot pour qu'en l'additionnant
-				# avec la ligne i, on obtienne 0 sur la colonne du pivot
-				a_ik = tab.get_element(k,col)
-				coef = -a_ik/a_ij
-				tab.add_lines(k,line,coef=coef)	
+	# on passe la colonne du pivot a 0
+	a_ij = tab.get_element(line,col)
+	for k in range(tab.nb_lines):
+		if k == line:
+			continue
+		else:
+			# on cherche par quelle valeur multiplie la ligne du pivot pour qu'en l'additionnant
+			# avec la ligne i, on obtienne 0 sur la colonne du pivot
+			a_ik = tab.get_element(k,col)
+			coef = -a_ik/a_ij
+			tab.add_lines(k,line,coef=coef)	
 
 def resoudre(pb):
 	"""
@@ -217,7 +217,7 @@ def resoudre(pb):
 
 	# verification pour savoir si primal realisable, dual realisable ou aucun des deux
 	primal = is_primal(pb)
-	print("primal = {0}".format(primal))
+	# print("primal = {0}".format(primal))
 
 	# si aucun des deux, appel de probleme_auxiliaire pour trouver une base primale realisable
 	if not primal and not is_positive(pb.c):
@@ -228,7 +228,7 @@ def resoudre(pb):
 		tab = conversion_pb(pb)
 	return simplexe(tab,base,primal)
 
-def affiche_solution(tab,base):
+def get_solution(tab,base,print_sol=True):
 	"""
 	Affiche la solution a partir du tableau et de la base et renvoie la liste
 	des valeurs de la solution trouvee a cette etape du simplexe
@@ -253,11 +253,12 @@ def affiche_solution(tab,base):
 	# et on met ces valeurs aux positions correspondantes de la liste solution
 	for i in range(len(base)):
 		sol[base[i]] = tab.get_element(i,tab.nb_cols-1)
-	# Affichage des solutions sans variables d'ecart et la valeur de la fonction a minimiser correspondante
-	print("La solution est : {0}, avec z = {1} et:".format(sol[range(len(base))],-tab.get_element(tab.nb_lines-1,tab.nb_cols-1)))
-	# Affichage des valeurs de toutes les variables
-	for i in range(len(sol)):
-		print("x{0} = {1}".format(i,sol[i]))
+	if print_sol:
+		# Affichage des solutions sans variables d'ecart et la valeur de la fonction a minimiser correspondante
+		print("La solution est : {0}, avec z = {1} et:".format(sol[range(len(base))],-tab.get_element(tab.nb_lines-1,tab.nb_cols-1)))
+		# Affichage des valeurs de toutes les variables
+		for i in range(len(sol)):
+			print("x{0} = {1}".format(i,sol[i]))
 	return sol
 
 
@@ -327,7 +328,7 @@ def probleme_auxiliaire(pb):
 	base = [pb.c.size-1-k for k in range(pb.b.size)]
 	base.sort()
 	# algo du simplexe pour le probleme, avec une base primale realisable (vor potential bugs dans doc)
-	sol_aux, base_aux = simplexe(tab,base,True)
+	sol_aux, base_aux = simplexe(tab,base,True,print_sol=False)
 
 	z = -np.dot(sol_aux[:-len(b)],pb.c)
 

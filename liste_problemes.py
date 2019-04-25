@@ -9,7 +9,7 @@ def get_primal():
 	b = np.array([5,11,8])
 	c = np.array([-5,-4,-3,0,0,0])
 	pb = Probleme_standard(A,b,c)
-	sol = np.array([2,0,1,0,1,0])
+	sol = np.array([2.,0.,1.,0.,1.,0.])
 	return (pb,sol)
 
 def get_dual():
@@ -17,7 +17,7 @@ def get_dual():
 	b = np.array([-4,-10])
 	c = np.array([1,2,3,0,0])
 	pb = Probleme_standard(A,b,c)
-	sol = np.array([5,0,0,1,0])
+	sol = np.array([5.,0.,0.,1.,0.])
 	return (pb,sol)
 
 def get_aux():
@@ -25,7 +25,7 @@ def get_aux():
 	b = np.array([-4,-1,3])
 	c = np.array([1,-2,0,0,0])
 	pb = Probleme_standard(A,b,c)
-	sol = np.array([1,3,0,1,0])
+	sol = np.array([1.,3.,0.,1.,0.])
 	return (pb,sol)
 
 def enter_problem():
@@ -71,6 +71,8 @@ def enter_problem():
 			valide = input('Recommencer? (o/n) ') == 'n'
 	if canon:
 		pb = Probleme_canonique(A,b,c)
+		pb.affiche()
+		print('Conversion en probleme standard')
 		pb = pb.canon2stand()
 	else:
 		pb = Probleme_standard(A,b,c)

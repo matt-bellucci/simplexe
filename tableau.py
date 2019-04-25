@@ -1,19 +1,19 @@
 import numpy as np
 class Tableau:
-"""
-Cree un objet qui permet de manipuler un tableau du simplexe et donc faciliter
-l'implementation de l'algorithme
+	"""
+	Cree un objet qui permet de manipuler un tableau du simplexe et donc faciliter
+	l'implementation de l'algorithme
 
-Attributes
-----------
-tab : numpy.ndarray
-	Matrice contenant tous les coefficients du tableau du simplexe
-nb_lines : int
-	Le nombre de lignes de tab
-nb_cols : int
-	Le nombre de colonnes de tab
+	Attributes
+	----------
+	tab : numpy.ndarray
+		Matrice contenant tous les coefficients du tableau du simplexe
+	nb_lines : int
+		Le nombre de lignes de tab
+	nb_cols : int
+		Le nombre de colonnes de tab
+	"""
 
-"""
 	def __init__(self,A):
 		self.tab = np.array(A,dtype=float)
 		self.nb_lines = A.shape[0]
