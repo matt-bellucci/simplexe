@@ -10,7 +10,7 @@ choix = '0'
 while int(choix) not in range(1,5):
 	choix = input("Choix : ")
 	if choix == '1':
-		pb,sol = liste_problemes.get_primal()
+		pb,sol = liste_problemes.exemple_primal()
 	elif choix == '2':
 		pb,sol = liste_problemes.get_dual()
 	elif choix == '3':
